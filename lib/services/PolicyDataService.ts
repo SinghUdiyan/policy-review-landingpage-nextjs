@@ -385,13 +385,23 @@ class PolicyDataService {
           validMaxTerm = Math.min(maxTerm, maxTermFromMaturity);
         }
         
-        // Only add terms if valid range exists
-        if (validMinTerm <= validMaxTerm) {
-          if (validMinTerm === validMaxTerm) {
-            // Fixed term policy
-            policyTerms.add(validMinTerm);
-          } else {
-            // Range policy - add all terms in range
+        // Special handling for fixed-term policies
+        // If it's a fixed term (minTerm === maxTerm), and the term is valid according to Min/MaxPolicyTerm,
+        // we should include it even if age at maturity constraint would exclude it
+        // This handles cases like whole-life policies or special term values
+        if (minTerm === maxTerm) {
+          // Fixed term policy - check if age at maturity is at least the minimum
+          const maturityAge = ageAtPurchase + minTerm;
+          if (!variant.MinAgeAtMaturity || maturityAge >= variant.MinAgeAtMaturity) {
+            // Include the fixed term if it meets minimum age requirement
+            // For maximum age, we're more lenient for fixed terms
+            if (!variant.MaxAgeAtMaturity || maturityAge <= variant.MaxAgeAtMaturity + 5) {
+              policyTerms.add(minTerm);
+            }
+          }
+        } else {
+          // Range policy - only add terms if valid range exists
+          if (validMinTerm <= validMaxTerm) {
             for (let term = validMinTerm; term <= validMaxTerm; term++) {
               policyTerms.add(term);
             }

@@ -313,11 +313,37 @@ export default function PolicyReviewForm({
   // Check if Single Premium (PPT = "1")
   const isSinglePremium = selectedPolicyData?.PPT === "1";
 
+  // Check if PPT field should be shown (even when policyTerm not selected yet)
+  // This uses initialPolicyData to determine if PPT field should be visible
+  const shouldShowPPTField = useMemo(() => {
+    if (!initialPolicyData) return false;
+    const pptValue = initialPolicyData.PPT?.trim() || "";
+    
+    // Always show for PPT = "1" (Single Premium)
+    if (pptValue === "1") return true;
+    
+    // Always show for PPT = "0" (Regular Premium - same as policy term)
+    if (pptValue === "0") return true;
+    
+    // Always show for negative PPT (e.g., "-3")
+    if (pptValue.startsWith("-")) return true;
+    
+    // Always show for comma-separated list
+    if (pptValue.includes(",")) return true;
+    
+    // Always show for fixed positive number
+    if (pptValue && !isNaN(parseInt(pptValue, 10))) return true;
+    
+    return false;
+  }, [initialPolicyData]);
+
   // Get PPT options based on policy PPT value (reactive to variant changes)
   const pptOptions = useMemo(() => {
-    if (!selectedPolicyData) return [];
+    // Use selectedPolicyData if available, otherwise fallback to initialPolicyData
+    const policyData = selectedPolicyData || initialPolicyData;
+    if (!policyData) return [];
 
-    const pptValue = selectedPolicyData.PPT.trim();
+    const pptValue = policyData.PPT?.trim() || "";
     const policyTerm = parseInt(step4Form.watch("policyTerm") || "0", 10);
 
     // PPT = "1" - Single Premium
@@ -347,7 +373,7 @@ export default function PolicyReviewForm({
 
     // PPT is fixed positive number
     return [{ value: pptValue, label: `${pptValue} years` }];
-  }, [selectedPolicyData, step4Form]);
+  }, [selectedPolicyData, initialPolicyData, step4Form]);
 
   // Validate Sum Assured (Rule 1: Between Min/Max and in Multiples)
   const validateSumAssured = (value: string) => {
@@ -890,14 +916,19 @@ export default function PolicyReviewForm({
                       {/* Age-Linked Policy Warning */}
                       
                       {/* Premium Paying Term - Dropdown based on PPT logic */}
-                      {pptOptions.length > 0 && (
+                      {shouldShowPPTField && (
                         <SelectField
                           control={step4Form.control}
                           name="premiumPayingTerm"
                           label="Premium Paying Term"
-                          placeholder="Select premium paying term"
+                          placeholder={
+                            pptOptions.length > 0 
+                              ? "Select premium paying term" 
+                              : "Please select Policy Term first"
+                          }
                           options={pptOptions}
                           errors={step4Form.formState.errors}
+                          disabled={pptOptions.length === 0}
                         />
                       )}
 

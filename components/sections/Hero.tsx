@@ -37,7 +37,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed"
           >
-            Get a <strong>FREE transparent review</strong> of your insurance policy. Know your real returns, compare with FD & Mutual Funds, and make informed decisions that could save you <strong>₹2-5 lakhs</strong>.
+            Get a <strong>FREE transparent review</strong> of your insurance policy. Know your real returns, compare with FD & Mutual Funds, and make informed decisions.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -68,38 +68,14 @@ export default function Hero() {
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
               <div className="text-3xl font-bold text-gray-900 mb-2">50,000+</div>
               <div className="text-gray-600">Policies Reviewed</div>
-              <div className="text-sm text-teal-600 font-medium mt-1">Save ₹2-5 Lakhs</div>
             </div>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
               <div className="text-3xl font-bold text-gray-900 mb-2">₹500 Cr+</div>
               <div className="text-gray-600">Assets Analyzed</div>
-              <div className="text-sm text-teal-600 font-medium mt-1">Average 8-12% Returns</div>
             </div>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
               <div className="text-3xl font-bold text-gray-900 mb-2">4.9/5</div>
               <div className="text-gray-600">Customer Rating</div>
-              <div className="text-sm text-teal-600 font-medium mt-1">10,000+ Reviews</div>
-            </div>
-          </motion.div>
-
-          {/* Trust Badges */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
-            className="mt-16 flex flex-wrap justify-center items-center gap-8 opacity-60"
-          >
-            <div className="text-sm text-gray-500 font-medium">Trusted by</div>
-            <div className="flex items-center gap-6">
-              <div className="w-20 h-8 bg-gray-200 rounded flex items-center justify-center text-xs font-semibold text-gray-600">
-                SEBI
-              </div>
-              <div className="w-20 h-8 bg-gray-200 rounded flex items-center justify-center text-xs font-semibold text-gray-600">
-                IRDAI
-              </div>
-              <div className="w-20 h-8 bg-gray-200 rounded flex items-center justify-center text-xs font-semibold text-gray-600">
-                AMFI
-              </div>
             </div>
           </motion.div>
         </div>

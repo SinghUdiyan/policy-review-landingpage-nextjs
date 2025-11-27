@@ -17,6 +17,7 @@ interface SelectFieldProps<T extends FieldValues> {
   options: { value: string; label: string }[];
   errors: Record<string, { message?: string } | undefined>;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export function SelectField<T extends FieldValues>({
@@ -27,6 +28,7 @@ export function SelectField<T extends FieldValues>({
   options,
   errors,
   required = true,
+  disabled = false,
 }: SelectFieldProps<T>) {
   const error = errors[name];
   const hasValue = control._formValues[name];
@@ -44,14 +46,20 @@ export function SelectField<T extends FieldValues>({
             <FormControl>
               <select
                 {...field}
+                disabled={disabled}
                 className={cn(
-                  "w-full h-12 pl-4 pr-10 border-2 rounded-lg transition-all duration-200 text-base bg-white cursor-pointer appearance-none",
-                  error
+                  "w-full h-12 pl-4 pr-10 border-2 rounded-lg transition-all duration-200 text-base bg-white appearance-none",
+                  disabled
+                    ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "cursor-pointer",
+                  !disabled && error
                     ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/10 bg-red-50/50"
-                    : hasValue && !error
+                    : !disabled && hasValue && !error
                     ? "border-green-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/10"
-                    : "border-gray-200 focus:border-[#231f20] focus:ring-2 focus:ring-[#231f20]/10",
-                  !field.value && "text-gray-400"
+                    : !disabled
+                    ? "border-gray-200 focus:border-[#231f20] focus:ring-2 focus:ring-[#231f20]/10"
+                    : "",
+                  !field.value && !disabled && "text-gray-400"
                 )}
               >
               <option value="" disabled className="text-gray-400">

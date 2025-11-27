@@ -5,47 +5,50 @@ import { Heart, Linkedin } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 
+// Simple gray placeholder as data URI
+const placeholderImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect width='48' height='48' fill='%23e5e7eb'/%3E%3C/svg%3E";
+
 const testimonials = [
   {
     name: "Rajesh Kumar",
     title: "IT Professional",
     company: "Mumbai",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+    image: placeholderImage,
     quote: "I was shocked to see my insurance policy was giving just 4% returns when FDs were offering 7%. PolicyReview showed me the real numbers. I surrendered and invested in mutual funds - best decision ever! Saved ₹2.5 lakhs in 3 years."
   },
   {
     name: "Priya Sharma",
     title: "Teacher",
     company: "Bangalore",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+    image: placeholderImage,
     quote: "The AI assistant Naitri helped me understand complex insurance terms. Now I know exactly where my money is going and what returns to expect. Very transparent platform! My new portfolio gives 12% vs 5% from my old policy."
   },
   {
     name: "Amit Patel",
     title: "Business Owner",
     company: "Delhi",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80",
+    image: placeholderImage,
     quote: "PolicyReview gave me clarity on 3 different insurance policies I had. The comparison with mutual funds was eye-opening. Saved lakhs by making informed decisions. My wealth grew by ₹8 lakhs in 2 years after switching."
   },
   {
     name: "Sneha Reddy",
     title: "Software Engineer",
     company: "Hyderabad",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=150&q=80",
+    image: placeholderImage,
     quote: "Finally, a platform that shows real returns without any hidden agenda. The detailed analysis helped me decide to continue one policy and exit another. Highly recommended! Increased my returns from 5% to 11%."
   },
   {
     name: "Vikram Singh",
     title: "Bank Manager",
     company: "Pune",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
+    image: placeholderImage,
     quote: "As a banker, I thought I knew investments. PolicyReview opened my eyes to how much I was losing with my insurance policy. The switch to mutual funds increased my returns by 300%. Thank you for the transparency!"
   },
   {
     name: "Meera Joshi",
     title: "CA",
     company: "Ahmedabad",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80",
+    image: placeholderImage,
     quote: "PolicyReview's detailed return analysis and benchmarking against market alternatives provided the clarity I needed. My clients now get 10-12% returns instead of 4-5% from traditional policies. Game changer!"
   }
 ];
@@ -101,13 +104,17 @@ export default function Reviews() {
                 >
                   {/* Profile */}
                   <div className="flex items-start gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-gray-200 flex items-center justify-center">
                       <Image
                         src={testimonial.image}
                         alt={testimonial.name}
                         width={48}
                         height={48}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -140,13 +147,17 @@ export default function Reviews() {
                 >
                   {/* Profile */}
                   <div className="flex items-start gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-gray-200 flex items-center justify-center">
                       <Image
                         src={testimonial.image}
                         alt={testimonial.name}
                         width={48}
                         height={48}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">

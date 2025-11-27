@@ -75,7 +75,6 @@ export default function CTA() {
                     <div className="text-center">
                       <div className="text-4xl font-bold mb-2">4.9/5</div>
                       <div className="text-lg mb-4">Customer Rating</div>
-                      <div className="text-sm opacity-90">Based on 10,000+ reviews</div>
                     </div>
                   </div>
 

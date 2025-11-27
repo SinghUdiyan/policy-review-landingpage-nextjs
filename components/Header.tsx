@@ -12,7 +12,6 @@ export default function Header() {
     { href: "#about", label: "About Us" },
     { href: "#how-it-works", label: "How It Works" },
     { href: "#features", label: "Features" },
-    { href: "#why-us", label: "Why Us" },
     { href: "#naitri", label: "Naitri" },
   ];
 
@@ -25,7 +24,7 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <Image 
-                src="/logo.png" 
+                src="/Logo.png" 
                 alt="PolicyReview" 
                 width={40}
                 height={40}
@@ -78,7 +77,7 @@ export default function Header() {
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center">
               <Image 
-                src="/logo.png" 
+                src="/Logo.png" 
                 alt="PolicyReview" 
                 width={32}
                 height={32}
