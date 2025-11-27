@@ -313,6 +313,9 @@ export default function PolicyReviewForm({
   // Check if Single Premium (PPT = "1")
   const isSinglePremium = selectedPolicyData?.PPT === "1";
 
+  // Watch policy term value to trigger pptOptions recalculation
+  const selectedPolicyTerm = step4Form.watch("policyTerm");
+
   // Check if PPT field should be shown (even when policyTerm not selected yet)
   // This uses initialPolicyData to determine if PPT field should be visible
   const shouldShowPPTField = useMemo(() => {
@@ -344,7 +347,7 @@ export default function PolicyReviewForm({
     if (!policyData) return [];
 
     const pptValue = policyData.PPT?.trim() || "";
-    const policyTerm = parseInt(step4Form.watch("policyTerm") || "0", 10);
+    const policyTerm = parseInt(selectedPolicyTerm || "0", 10);
 
     // PPT = "1" - Single Premium
     if (pptValue === "1") {
@@ -373,7 +376,7 @@ export default function PolicyReviewForm({
 
     // PPT is fixed positive number
     return [{ value: pptValue, label: `${pptValue} years` }];
-  }, [selectedPolicyData, initialPolicyData, step4Form]);
+  }, [selectedPolicyData, initialPolicyData, selectedPolicyTerm]);
 
   // Validate Sum Assured (Rule 1: Between Min/Max and in Multiples)
   const validateSumAssured = (value: string) => {
