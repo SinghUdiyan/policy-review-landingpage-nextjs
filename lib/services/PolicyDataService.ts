@@ -137,14 +137,13 @@ class PolicyDataService {
    */
   private parsePolicyTerm(term: number | string): number {
     if (typeof term === "number") {
-      // For regular policies, if term is very small (like 90), it likely means days
-      if (term < 10) {
-        return term / 365; // Convert days to years
-      }
-      return term; // Already in years
+      // Policy terms in master-data.json are always in years, not days
+      // Return as integer (round to handle any edge cases)
+      return Math.round(term);
     }
     if (typeof term === "string") {
       const lowerTerm = term.toLowerCase();
+      // Only convert to years if explicitly contains "day" or "days"
       if (lowerTerm.includes("day")) {
         const daysMatch = term.match(/\d+/);
         const days = daysMatch ? parseInt(daysMatch[0], 10) : 90;
@@ -356,11 +355,13 @@ class PolicyDataService {
           const minTargetAge = Math.max(variant.MinAgeAtMaturity, Math.ceil(ageAtPurchase) + 1);
           const maxTargetAge = variant.MaxAgeAtMaturity;
           
+          // Round ageAtPurchase to handle any decimal values
+          const roundedAge = Math.round(ageAtPurchase);
           for (let targetAge = minTargetAge; targetAge <= maxTargetAge; targetAge++) {
             // Calculate actual policy term: target age - current age
-            const actualTerm = targetAge - ageAtPurchase;
+            const actualTerm = targetAge - roundedAge;
             if (actualTerm > 0) {
-              policyTerms.add(actualTerm);
+              policyTerms.add(Math.round(actualTerm));
             }
           }
         }
@@ -372,18 +373,24 @@ class PolicyDataService {
         const maxTerm = this.parsePolicyTerm(variant.MaxPolicyTerm);
         
         // Apply Age at Maturity Rule
+        // Round ageAtPurchase to handle any decimal values from age parsing
+        const roundedAge = Math.round(ageAtPurchase);
         let validMinTerm = minTerm;
         let validMaxTerm = maxTerm;
         
         if (variant.MinAgeAtMaturity) {
-          const minTermFromMaturity = variant.MinAgeAtMaturity - ageAtPurchase;
-          validMinTerm = Math.max(minTerm, minTermFromMaturity);
+          const minTermFromMaturity = variant.MinAgeAtMaturity - roundedAge;
+          validMinTerm = Math.max(minTerm, Math.ceil(minTermFromMaturity));
         }
         
         if (variant.MaxAgeAtMaturity) {
-          const maxTermFromMaturity = variant.MaxAgeAtMaturity - ageAtPurchase;
-          validMaxTerm = Math.min(maxTerm, maxTermFromMaturity);
+          const maxTermFromMaturity = variant.MaxAgeAtMaturity - roundedAge;
+          validMaxTerm = Math.min(maxTerm, Math.floor(maxTermFromMaturity));
         }
+        
+        // Ensure terms are integers
+        validMinTerm = Math.ceil(validMinTerm);
+        validMaxTerm = Math.floor(validMaxTerm);
         
         // Special handling for fixed-term policies
         // If it's a fixed term (minTerm === maxTerm), and the term is valid according to Min/MaxPolicyTerm,
@@ -391,27 +398,30 @@ class PolicyDataService {
         // This handles cases like whole-life policies or special term values
         if (minTerm === maxTerm) {
           // Fixed term policy - check if age at maturity is at least the minimum
-          const maturityAge = ageAtPurchase + minTerm;
+          const maturityAge = roundedAge + minTerm;
           if (!variant.MinAgeAtMaturity || maturityAge >= variant.MinAgeAtMaturity) {
             // Include the fixed term if it meets minimum age requirement
             // For maximum age, we're more lenient for fixed terms
             if (!variant.MaxAgeAtMaturity || maturityAge <= variant.MaxAgeAtMaturity + 5) {
-              policyTerms.add(minTerm);
+              policyTerms.add(Math.round(minTerm));
             }
           }
         } else {
           // Range policy - only add terms if valid range exists
-          if (validMinTerm <= validMaxTerm) {
+          if (validMinTerm <= validMaxTerm && validMinTerm > 0) {
             for (let term = validMinTerm; term <= validMaxTerm; term++) {
-              policyTerms.add(term);
+              policyTerms.add(Math.round(term));
             }
           }
         }
       });
     }
     
-    // Convert to sorted array
-    return Array.from(policyTerms).sort((a, b) => a - b);
+    // Convert to sorted array and ensure all terms are integers
+    return Array.from(policyTerms)
+      .map(term => Math.round(term))
+      .filter(term => term > 0) // Remove any invalid terms
+      .sort((a, b) => a - b);
   }
 
   /**
