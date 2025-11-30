@@ -9,10 +9,10 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { href: "#about", label: "About Us" },
+    { href: "/about", label: "About Us" },
     { href: "#how-it-works", label: "How It Works" },
     { href: "#features", label: "Features" },
-    { href: "#naitri", label: "Naitri" },
+    { href: "/naitri", label: "Naitri" },
   ];
 
   return (
@@ -43,14 +43,25 @@ export default function Header() {
             <div className="flex items-center justify-center flex-1">
               <div className="flex items-center gap-12">
                 {navItems.map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="text-gray-700 text-base font-medium hover:text-gray-900 transition-all duration-300 relative group cursor-pointer"
-                  >
-                    {item.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-                  </a>
+                  item.href.startsWith('#') ? (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className="text-gray-700 text-base font-medium hover:text-gray-900 transition-all duration-300 relative group cursor-pointer"
+                    >
+                      {item.label}
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="text-gray-700 text-base font-medium hover:text-gray-900 transition-all duration-300 relative group cursor-pointer"
+                    >
+                      {item.label}
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  )
                 ))}
               </div>
             </div>
@@ -117,14 +128,25 @@ export default function Header() {
             <div className="py-6 border-t border-gray-100 bg-white/95 backdrop-blur-md">
               <div className="flex flex-col space-y-1">
                 {navItems.map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-gray-700 hover:text-gray-900 transition-colors py-3 px-4 font-medium"
-                  >
-                    {item.label}
-                  </a>
+                  item.href.startsWith('#') ? (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-gray-700 hover:text-gray-900 transition-colors py-3 px-4 font-medium"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-gray-700 hover:text-gray-900 transition-colors py-3 px-4 font-medium"
+                    >
+                      {item.label}
+                    </Link>
+                  )
                 ))}
               </div>
             </div>

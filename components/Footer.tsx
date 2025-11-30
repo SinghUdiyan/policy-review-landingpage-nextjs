@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
 
@@ -77,9 +78,9 @@ export default function Footer() {
               <h3 className="text-lg font-bold mb-6 text-white">Quick Links</h3>
               <ul className="space-y-3">
                 <li>
-                  <a href="#about" className="text-gray-300 hover:text-teal-400 transition-colors">
+                  <Link href="/about" className="text-gray-300 hover:text-teal-400 transition-colors">
                     About Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#how-it-works" className="text-gray-300 hover:text-teal-400 transition-colors">
@@ -92,14 +93,19 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
+                  <Link href="/naitri" className="text-gray-300 hover:text-teal-400 transition-colors">
+                    Naitri
+                  </Link>
+                </li>
+                <li>
                   <a href="#faq" className="text-gray-300 hover:text-teal-400 transition-colors">
                     FAQ
                   </a>
                 </li>
                 <li>
-                  <a href="/review" className="text-gray-300 hover:text-teal-400 transition-colors">
+                  <Link href="/review" className="text-gray-300 hover:text-teal-400 transition-colors">
                     Review My Policy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

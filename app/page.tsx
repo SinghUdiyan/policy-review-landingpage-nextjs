@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/sections/Hero";
-import AboutUs from "@/components/sections/AboutUs";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Features from "@/components/sections/Features";
 import CTA from "@/components/sections/CTA";
@@ -12,7 +11,6 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
-      <AboutUs />
       <HowItWorks />
       <Features />
       <CTA />
