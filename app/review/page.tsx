@@ -32,11 +32,14 @@ export default function ReviewPage() {
             </Link>
             <div className="flex items-center space-x-3">
               <Image 
-                src="/logo.png" 
+                src="/Logo.png" 
                 alt="PolicyReview" 
-                width={40}
-                height={40}
+                width={240}
+                height={240}
                 className="h-10 w-auto"
+                priority
+                quality={100}
+                style={{ objectFit: 'contain' }}
                 onError={(e) => {
                   // Fallback to text if image doesn't exist
                   e.currentTarget.style.display = 'none';

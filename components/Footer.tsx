@@ -27,9 +27,11 @@ export default function Footer() {
                 <Image 
                   src="/Logo.png" 
                   alt="PolicyReview" 
-                  width={40}
-                  height={40}
+                  width={240}
+                  height={240}
                   className="h-10 w-auto mr-3"
+                  quality={100}
+                  style={{ objectFit: 'contain' }}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
