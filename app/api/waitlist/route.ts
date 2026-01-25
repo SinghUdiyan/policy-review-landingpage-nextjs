@@ -51,13 +51,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let credentials: any;
+    let credentials: object;
     try {
-      credentials = JSON.parse(credentialsJson);
+      const parsed = JSON.parse(credentialsJson) as Record<string, unknown>;
       // Ensure private_key has actual newlines (not escaped \n)
-      if (credentials.private_key && typeof credentials.private_key === 'string') {
-        credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+      if (typeof parsed.private_key === "string") {
+        parsed.private_key = parsed.private_key.replace(/\\n/g, "\n");
       }
+      credentials = parsed;
     } catch (e) {
       console.error("Invalid GOOGLE_SHEETS_SERVICE_ACCOUNT_JSON:", e);
       return NextResponse.json(
