@@ -607,7 +607,7 @@ export default function PolicyReviewOutput({ formData, onClose }: PolicyReviewOu
                       padding: '12px',
                       boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
                     }}
-                    formatter={(value: number) => [`${value}%`, 'IRR']}
+                    formatter={(value: number | undefined) => [`${value ?? 0}%`, 'IRR']}
                     labelStyle={{ fontWeight: 'bold', marginBottom: '4px' }}
                   />
                   <Bar dataKey="value" radius={[8, 8, 0, 0]} animationDuration={800}>
