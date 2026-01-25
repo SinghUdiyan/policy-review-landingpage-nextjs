@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Linkedin, Target, Users, Heart, Sparkles, Shield, TrendingUp, Lightbulb, CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
+import { Linkedin, Target, Users, Sparkles, TrendingUp, Lightbulb, AlertCircle } from "lucide-react";
 
 const teamMembers = [
   {
@@ -38,6 +40,9 @@ const problemStats = [
 ];
 
 export default function AboutPage() {
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -326,17 +331,28 @@ export default function AboutPage() {
             className="max-w-3xl mx-auto text-center"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Ready to Review Your Policy?
+              {isWaitlist ? "Join the Waitlist" : "Ready to Review Your Policy?"}
             </h2>
             <p className="text-xl text-gray-600 mb-10">
-              Join thousands of Indians making informed financial decisions with Policy Review.
+              {isWaitlist
+                ? "Be the first to get early access when we launch."
+                : "Join thousands of Indians making informed financial decisions with Policy Review."}
             </p>
-            <Link
-              href="/review"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold text-lg"
-            >
-              Review My Policy FREE
-            </Link>
+            {isWaitlist ? (
+              <button
+                onClick={openModal}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold text-lg"
+              >
+                Join Waitlist
+              </button>
+            ) : (
+              <Link
+                href="/review"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold text-lg"
+              >
+                Review My Policy FREE
+              </Link>
+            )}
           </motion.div>
         </div>
       </section>

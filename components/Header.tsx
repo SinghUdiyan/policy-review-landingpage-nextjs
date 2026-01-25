@@ -4,9 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
 
   const navItems = [
     { href: "/about", label: "About Us" },
@@ -47,14 +51,14 @@ export default function Header() {
               <div className="flex items-center gap-12">
                 {navItems.map((item) => (
                   item.href.startsWith('#') ? (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      className="text-gray-700 text-base font-medium hover:text-gray-900 transition-all duration-300 relative group cursor-pointer"
-                    >
-                      {item.label}
-                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-                    </a>
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="text-gray-700 text-base font-medium hover:text-gray-900 transition-all duration-300 relative group cursor-pointer"
+                  >
+                    {item.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
                   ) : (
                     <Link
                       key={item.href}
@@ -71,15 +75,26 @@ export default function Header() {
             
             {/* Action Buttons */}
             <div className="flex items-center gap-4">
-              <button className="btn-outline text-sm px-6 py-2">
-                Login
-              </button>
-              <Link
-                href="/review"
-                className="btn-primary text-sm px-6 py-2"
-              >
-                Review My Policy - FREE
-              </Link>
+              {!isWaitlist && (
+                <button className="btn-outline text-sm px-6 py-2">
+                  Login
+                </button>
+              )}
+              {isWaitlist ? (
+                <button
+                  onClick={openModal}
+                  className="btn-primary text-sm px-6 py-2"
+                >
+                  Join Waitlist
+                </button>
+              ) : (
+                <Link
+                  href="/review"
+                  className="btn-primary text-sm px-6 py-2"
+                >
+                  Review My Policy - FREE
+                </Link>
+              )}
             </div>
           </nav>
         </div>
@@ -110,15 +125,26 @@ export default function Header() {
             </Link>
             
             <div className="flex items-center gap-3">
-              <button className="btn-outline text-xs px-4 py-2">
-                Login
-              </button>
-              <Link
-                href="/review"
-                className="btn-primary text-xs px-4 py-2"
-              >
-                Review FREE
-              </Link>
+              {!isWaitlist && (
+                <button className="btn-outline text-xs px-4 py-2">
+                  Login
+                </button>
+              )}
+              {isWaitlist ? (
+                <button
+                  onClick={openModal}
+                  className="btn-primary text-xs px-4 py-2"
+                >
+                  Join Waitlist
+                </button>
+              ) : (
+                <Link
+                  href="/review"
+                  className="btn-primary text-xs px-4 py-2"
+                >
+                  Review FREE
+                </Link>
+              )}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
@@ -135,14 +161,14 @@ export default function Header() {
               <div className="flex flex-col space-y-1">
                 {navItems.map((item) => (
                   item.href.startsWith('#') ? (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-gray-700 hover:text-gray-900 transition-colors py-3 px-4 font-medium"
-                    >
-                      {item.label}
-                    </a>
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-gray-700 hover:text-gray-900 transition-colors py-3 px-4 font-medium"
+                  >
+                    {item.label}
+                  </a>
                   ) : (
                     <Link
                       key={item.href}

@@ -2,8 +2,13 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
 
 export default function Hero() {
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-20 bg-gradient-to-br from-gray-50 via-white to-teal-50">
       {/* Background Pattern */}
@@ -47,15 +52,24 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
           >
-            <Link
-              href="/review"
-              className="btn-primary text-lg px-8 py-4"
-            >
-              Review My Policy FREE
-            </Link>
-            <button className="btn-outline text-lg px-8 py-4">
+            {isWaitlist ? (
+              <button
+                onClick={openModal}
+                className="btn-primary text-lg px-8 py-4"
+              >
+                Join Waitlist
+              </button>
+            ) : (
+              <Link
+                href="/review"
+                className="btn-primary text-lg px-8 py-4"
+              >
+                Review My Policy FREE
+              </Link>
+            )}
+            <a href="#how-it-works" className="btn-outline text-lg px-8 py-4">
               Learn More
-            </button>
+            </a>
           </motion.div>
 
           {/* Trust Metrics */}
@@ -65,18 +79,37 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="text-3xl font-bold text-gray-900 mb-2">50,000+</div>
-              <div className="text-gray-600">Policies Reviewed</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="text-3xl font-bold text-gray-900 mb-2">₹500 Cr+</div>
-              <div className="text-gray-600">Assets Analyzed</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="text-3xl font-bold text-gray-900 mb-2">4.9/5</div>
-              <div className="text-gray-600">Customer Rating</div>
-            </div>
+            {isWaitlist ? (
+              <>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Transparent Analysis</div>
+                  <div className="text-gray-600">No hidden agenda</div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Zero Bias</div>
+                  <div className="text-gray-600">Unbiased insights</div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">No Spam, Ever</div>
+                  <div className="text-gray-600">We respect your inbox</div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+                  <div className="text-3xl font-bold text-gray-900 mb-2">50,000+</div>
+                  <div className="text-gray-600">Policies Reviewed</div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+                  <div className="text-3xl font-bold text-gray-900 mb-2">₹500 Cr+</div>
+                  <div className="text-gray-600">Assets Analyzed</div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+                  <div className="text-3xl font-bold text-gray-900 mb-2">4.9/5</div>
+                  <div className="text-gray-600">Customer Rating</div>
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
       </div>

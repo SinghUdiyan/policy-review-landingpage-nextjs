@@ -2,8 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
 
 export default function Footer() {
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
 
 
   return (
@@ -99,15 +103,26 @@ export default function Footer() {
                     Naitri
                   </Link>
                 </li>
+                {!isWaitlist && (
+                  <li>
+                    <a href="#faq" className="text-gray-300 hover:text-teal-400 transition-colors">
+                      FAQ
+                    </a>
+                  </li>
+                )}
                 <li>
-                  <a href="#faq" className="text-gray-300 hover:text-teal-400 transition-colors">
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <Link href="/review" className="text-gray-300 hover:text-teal-400 transition-colors">
-                    Review My Policy
-                  </Link>
+                  {isWaitlist ? (
+                    <button
+                      onClick={openModal}
+                      className="text-gray-300 hover:text-teal-400 transition-colors text-left"
+                    >
+                      Join Waitlist
+                    </button>
+                  ) : (
+                    <Link href="/review" className="text-gray-300 hover:text-teal-400 transition-colors">
+                      Review My Policy
+                    </Link>
+                  )}
                 </li>
               </ul>
             </div>
@@ -118,25 +133,29 @@ export default function Footer() {
               <div className="space-y-3 text-gray-300">
                 <p>
                   <strong className="text-white">Email:</strong><br />
-                  support@policyreview.co.in
+                  {isWaitlist ? "sarthak.patel@policyreview.co.in" : "support@policyreview.co.in"}
                 </p>
                 <p>
-                  <strong className="text-white">Phone:</strong><br />
-                  +91 98765 43210
+                  <strong className="text-white">{isWaitlist ? "Mobile" : "Phone"}:</strong><br />
+                  {isWaitlist ? "9712420449" : "+91 98765 43210"}
                 </p>
-                <p>
-                  <strong className="text-white">Address:</strong><br />
-                  Mumbai, Maharashtra, India
-                </p>
-                <div className="pt-4">
-                  <a href="https://placeholder-link.com/privacy" className="text-gray-300 hover:text-teal-400 transition-colors text-sm">
-                    Privacy Policy
-                  </a>
-                  <span className="mx-2 text-gray-500">•</span>
-                  <a href="https://placeholder-link.com/terms" className="text-gray-300 hover:text-teal-400 transition-colors text-sm">
-                    Terms of Service
-                  </a>
-                </div>
+                {!isWaitlist && (
+                  <p>
+                    <strong className="text-white">Address:</strong><br />
+                    Mumbai, Maharashtra, India
+                  </p>
+                )}
+                {!isWaitlist && (
+                  <div className="pt-4">
+                    <a href="https://placeholder-link.com/privacy" className="text-gray-300 hover:text-teal-400 transition-colors text-sm">
+                      Privacy Policy
+                    </a>
+                    <span className="mx-2 text-gray-500">•</span>
+                    <a href="https://placeholder-link.com/terms" className="text-gray-300 hover:text-teal-400 transition-colors text-sm">
+                      Terms of Service
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -146,7 +165,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm">
-              © 2025 PolicyReview.co.in. All rights reserved.
+              © {isWaitlist ? "2026" : "2025"} PolicyReview.co.in. All rights reserved.
             </div>
             <div className="text-gray-400 text-sm">
               <strong className="text-white">Disclaimer:</strong> PolicyReview is an independent platform. 

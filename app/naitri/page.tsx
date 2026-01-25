@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
 import { Heart, Sparkles, Shield, Lightbulb, CheckCircle2, Brain, MessageCircle, Zap, TrendingUp, ArrowRight } from "lucide-react";
 
 const naitriFeatures = [
@@ -31,6 +33,9 @@ const friendQualities = [
 ];
 
 export default function NaitriPage() {
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -290,13 +295,23 @@ export default function NaitriPage() {
             <p className="text-2xl md:text-3xl font-semibold mb-10 text-white/95">
               Naitri is your trusted companion on your financial journey.
             </p>
-            <Link
-              href="/review"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-xl hover:shadow-2xl font-semibold text-lg"
-            >
-              Start Talking to Naitri
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            {isWaitlist ? (
+              <button
+                onClick={openModal}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-xl hover:shadow-2xl font-semibold text-lg"
+              >
+                Join Waitlist
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            ) : (
+              <Link
+                href="/review"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-xl hover:shadow-2xl font-semibold text-lg"
+              >
+                Start Talking to Naitri
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            )}
           </motion.div>
         </div>
       </section>

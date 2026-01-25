@@ -6,10 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Shield, CheckCircle, FileText } from "lucide-react";
 import PolicyReviewForm from "@/components/PolicyReviewForm";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
 
 export default function ReviewPage() {
   const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(true);
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
 
   const handleFormClose = (open: boolean) => {
     if (!open) {
@@ -62,10 +66,12 @@ export default function ReviewPage() {
         {/* Page Header */}
         <div className="text-center mb-8 md:mb-12 animate-fade-in">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "var(--font-lora), 'Lora', serif" }}>
-            Review Your LIC Policy
+            {isWaitlist ? "We're Launching Soon" : "Review Your LIC Policy"}
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-6">
-            Get a comprehensive, unbiased analysis of your policy&apos;s performance in just 3 minutes
+            {isWaitlist
+              ? "Join the waitlist for early access. We'll notify you when our platform is ready."
+              : "Get a comprehensive, unbiased analysis of your policy&apos;s performance in just 3 minutes"}
           </p>
           
           {/* Trust Indicators */}
@@ -91,27 +97,43 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Form */}
+        {/* Form or Waitlist CTA */}
         <div className="animate-fade-in">
-          <PolicyReviewForm 
-            open={isFormOpen} 
-            onOpenChange={handleFormClose}
-            inline={true}
-          />
+          {isWaitlist ? (
+            <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-200 text-center">
+              <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto">
+                Be the first to get transparent policy reviews when we launch. Join the waitlist and we&apos;ll keep you updated.
+              </p>
+              <button
+                onClick={openModal}
+                className="btn-primary text-lg px-8 py-4"
+              >
+                Join Waitlist
+              </button>
+            </div>
+          ) : (
+            <PolicyReviewForm 
+              open={isFormOpen} 
+              onOpenChange={handleFormClose}
+              inline={true}
+            />
+          )}
         </div>
 
         {/* Bottom Privacy Notice */}
-        <div className="mt-8 text-center">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-200 inline-block max-w-2xl">
-            <div className="flex items-start space-x-3 text-left">
-              <Shield className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-gray-600">
-                <p className="font-semibold text-gray-900 mb-1">Your Privacy Matters</p>
-                <p>Your policy information is secure and will only be used to generate your personalized review report. We never share your data with third parties.</p>
+        {!isWaitlist && (
+          <div className="mt-8 text-center">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-gray-200 inline-block max-w-2xl">
+              <div className="flex items-start space-x-3 text-left">
+                <Shield className="h-5 w-5 text-gray-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-gray-600">
+                  <p className="font-semibold text-gray-900 mb-1">Your Privacy Matters</p>
+                  <p>Your policy information is secure and will only be used to generate your personalized review report. We never share your data with third parties.</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

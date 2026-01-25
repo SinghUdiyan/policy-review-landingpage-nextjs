@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle, BarChart3, TrendingUp, Brain } from "lucide-react";
+import { isWaitlistMode } from "@/lib/config/waitlist";
 
-const features = [
+const featuresFull = [
   {
     icon: BarChart3,
     title: "Policy Analysis & Scoring",
@@ -39,7 +40,46 @@ const features = [
   }
 ];
 
+const featuresWaitlist = [
+  {
+    icon: BarChart3,
+    title: "Policy Analysis & Scoring",
+    description: "Get comprehensive analysis of your insurance policy with detailed scoring based on returns, liquidity, and safety parameters.",
+    benefits: [
+      "Overall Policy Score (out of 5)",
+      "Return Timeline Analysis",
+      "Risk Assessment",
+      "Liquidity Analysis"
+    ]
+  },
+  {
+    icon: TrendingUp,
+    title: "Alternative Comparison",
+    description: "Compare your policy performance against Fixed Deposits, Mutual Funds, and other investment options to make informed decisions.",
+    benefits: [
+      "Benchmark Comparisons",
+      "Return vs Risk Analysis",
+      "Market Performance Tracking",
+      "Alternative Analysis"
+    ]
+  },
+  {
+    icon: Brain,
+    title: "Actionable Insights",
+    description: "Get personalized recommendations from our AI assistant Naitri for better financial decisions and portfolio optimization.",
+    benefits: [
+      "AI-Powered Insights",
+      "Simplified Review",
+      "Action Plans",
+      "Portfolio Optimization"
+    ]
+  }
+];
+
 export default function Features() {
+  const isWaitlist = isWaitlistMode();
+  const features = isWaitlist ? featuresWaitlist : featuresFull;
+
   return (
     <section id="features" className="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
       {/* Background Pattern */}

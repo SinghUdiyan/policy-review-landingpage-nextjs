@@ -406,7 +406,7 @@ class PolicyDataService {
               policyTerms.add(Math.round(minTerm));
             }
           }
-        } else {
+          } else {
           // Range policy - only add terms if valid range exists
           if (validMinTerm <= validMaxTerm && validMinTerm > 0) {
             for (let term = validMinTerm; term <= validMaxTerm; term++) {

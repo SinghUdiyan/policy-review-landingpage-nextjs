@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand, Nunito, Lora } from "next/font/google";
 import "./globals.css";
+import { WaitlistLayoutWrapper } from "@/components/WaitlistLayoutWrapper";
 
 const quicksand = Quicksand({ 
   subsets: ["latin"],
@@ -34,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${nunito.variable} ${quicksand.variable} ${lora.variable} ${nunito.className}`}>
-        {children}
+        <WaitlistLayoutWrapper>{children}</WaitlistLayoutWrapper>
       </body>
     </html>
   );

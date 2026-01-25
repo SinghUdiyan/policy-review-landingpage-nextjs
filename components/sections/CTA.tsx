@@ -3,8 +3,13 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { CheckCircle, Shield, Clock } from "lucide-react";
+import { isWaitlistMode } from "@/lib/config/waitlist";
+import { useWaitlist } from "@/lib/context/WaitlistContext";
 
 export default function CTA() {
+  const isWaitlist = isWaitlistMode();
+  const { openModal } = useWaitlist();
+
   return (
     <section className="py-24 bg-gradient-to-br from-teal-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
@@ -53,12 +58,21 @@ export default function CTA() {
                   </div>
                 </div>
 
-                <Link
-                  href="/review"
-                  className="btn-primary text-lg px-8 py-4 inline-block"
-                >
-                  Review My Policy FREE
-                </Link>
+                {isWaitlist ? (
+                  <button
+                    onClick={openModal}
+                    className="btn-primary text-lg px-8 py-4 inline-block"
+                  >
+                    Join Waitlist
+                  </button>
+                ) : (
+                  <Link
+                    href="/review"
+                    className="btn-primary text-lg px-8 py-4 inline-block"
+                  >
+                    Review My Policy FREE
+                  </Link>
+                )}
               </motion.div>
 
               {/* Visual Element */}
@@ -69,26 +83,35 @@ export default function CTA() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="relative"
               >
-                <div className="relative">
-                  {/* Main Card */}
-                  <div className="bg-gradient-to-br from-teal-500 to-blue-500 rounded-2xl p-8 text-white shadow-2xl">
+                {isWaitlist ? (
+                  <div className="bg-gradient-to-br from-teal-500 to-blue-500 rounded-2xl p-8 md:p-10 text-white shadow-2xl flex items-center justify-center min-h-[180px]">
                     <div className="text-center">
-                      <div className="text-4xl font-bold mb-2">4.9/5</div>
-                      <div className="text-lg mb-4">Customer Rating</div>
+                      <div className="text-2xl md:text-3xl font-bold mb-1">Launching Soon</div>
+                      <div className="text-base md:text-lg text-white/90">Join the waitlist for early access</div>
                     </div>
                   </div>
+                ) : (
+                  <div className="relative">
+                    {/* Main Card */}
+                    <div className="bg-gradient-to-br from-teal-500 to-blue-500 rounded-2xl p-8 text-white shadow-2xl">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold mb-2">4.9/5</div>
+                        <div className="text-lg mb-4">Customer Rating</div>
+                      </div>
+                    </div>
 
-                  {/* Floating Cards */}
-                  <div className="absolute -top-4 -right-4 bg-white rounded-xl p-4 shadow-lg border border-gray-100">
-                    <div className="text-2xl font-bold text-gray-900">50,000+</div>
-                    <div className="text-sm text-gray-600">Policies Reviewed</div>
-                  </div>
+                    {/* Floating Cards */}
+                    <div className="absolute -top-4 -right-4 bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                      <div className="text-2xl font-bold text-gray-900">50,000+</div>
+                      <div className="text-sm text-gray-600">Policies Reviewed</div>
+                    </div>
 
-                  <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-4 shadow-lg border border-gray-100">
-                    <div className="text-2xl font-bold text-gray-900">₹500 Cr+</div>
-                    <div className="text-sm text-gray-600">Assets Analyzed</div>
+                    <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                      <div className="text-2xl font-bold text-gray-900">₹500 Cr+</div>
+                      <div className="text-sm text-gray-600">Assets Analyzed</div>
+                    </div>
                   </div>
-                </div>
+                )}
               </motion.div>
             </div>
           </div>

@@ -5,8 +5,11 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import Features from "@/components/sections/Features";
 import CTA from "@/components/sections/CTA";
 import Reviews from "@/components/sections/Reviews";
+import { isWaitlistMode } from "@/lib/config/waitlist";
 
 export default function Home() {
+  const isWaitlist = isWaitlistMode();
+
   return (
     <main className="min-h-screen">
       <Header />
@@ -14,7 +17,7 @@ export default function Home() {
       <HowItWorks />
       <Features />
       <CTA />
-      <Reviews />
+      {!isWaitlist && <Reviews />}
       <Footer />
     </main>
   );
