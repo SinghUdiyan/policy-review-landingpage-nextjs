@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { PolicyReviewData } from "@/types/policyReview";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,7 @@ export default function PolicyReviewReportPage() {
   const [showPortfolioDialog, setShowPortfolioDialog] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
-  const [formData, setFormData] = useState<unknown>(null);
+  const [formData, setFormData] = useState<PolicyReviewData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -131,6 +132,29 @@ export default function PolicyReviewReportPage() {
     };
   }, [formData]);
 
+  
+const entryAge = useMemo(() => {
+  if (!formData?.step1?.dateOfBirth || !formData?.step2?.policyPurchaseDate) {
+    return null;
+  }
+
+  const dob = new Date(formData.step1.dateOfBirth);
+  const purchaseDate = new Date(formData.step2.policyPurchaseDate);
+
+  let age = purchaseDate.getFullYear() - dob.getFullYear();
+  const monthDiff = purchaseDate.getMonth() - dob.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && purchaseDate.getDate() < dob.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}, [formData]);
+
+
   const performanceData = {
     today: {
       premiumPaid: premiumCalculation?.totalPremiumPaid || 0,
@@ -228,6 +252,50 @@ export default function PolicyReviewReportPage() {
     }).format(amount);
   };
 
+ 
+
+  const policyStatus = useMemo(() => {
+  if (!formData) return null;
+
+  const premiumType = formData.step4?.premiumType;
+  const purchaseDate = formData.step2?.policyPurchaseDate
+    ? new Date(formData.step2.policyPurchaseDate)
+    : null;
+
+  const term = Number(formData.step4?.policyTerm);
+  const ppt = Number(formData.step4?.premiumPayingTerm);
+  const today = new Date();
+
+  if (!purchaseDate || !term || !ppt) return null;
+
+  const maturityDate = new Date(purchaseDate.getTime());
+  maturityDate.setFullYear(maturityDate.getFullYear() + term);
+
+  const pptEndDate = new Date(purchaseDate.getTime());
+  pptEndDate.setFullYear(pptEndDate.getFullYear() + ppt);
+
+  // ✅ Single Premium
+  if (premiumType === "single") {
+    if (today > maturityDate) {
+      return { label: "Matured", maturityDate };
+    }
+    return { label: "Active (Fully Paid)", maturityDate };
+  }
+
+  // ✅ Regular Premium
+  if (today > maturityDate) {
+    return { label: "Matured", maturityDate };
+  }
+
+  if (today <= pptEndDate) {
+    return { label: "Active (Premium Paying)", maturityDate };
+  }
+
+  return { label: "Active (Paid-Up)", maturityDate };
+}, [formData]);
+
+
+
   const getScoreGradient = (score: number) => {
     if (score >= 4) {
       return { start: '#10b981', end: '#059669', bgClass: 'from-green-100 to-emerald-100', textClass: 'text-green-600', borderClass: 'border-green-300' };
@@ -283,6 +351,64 @@ export default function PolicyReviewReportPage() {
       alert('PDF Report is ready! In production, this would download a detailed PDF report.');
     }, 2000);
   };
+
+  const durationAnalytics = useMemo(() => {
+  if (!formData?.step2?.policyPurchaseDate || !formData?.step4?.policyTerm) {
+    return null;
+  }
+
+  const purchaseDate = new Date(formData.step2.policyPurchaseDate);
+  const today = new Date();
+
+  const policyTerm = Number(formData.step4.policyTerm);
+  const ppt = Number(formData.step4.premiumPayingTerm);
+
+  const yearsCompleted = Math.max(
+    0,
+    today.getFullYear() - purchaseDate.getFullYear()
+  );
+
+  const yearsRemaining = Math.max(0, policyTerm - yearsCompleted);
+
+  const pptCompleted = Math.min(yearsCompleted, ppt);
+  const pptRemaining = Math.max(0, ppt - pptCompleted);
+
+  return {
+    yearsCompleted,
+    yearsRemaining,
+    pptCompleted,
+    pptRemaining,
+  };
+}, [formData]);
+
+const recommendationLogic = useMemo(() => {
+  if (!formData) return null;
+
+  const policyIRR = performanceData.today.irr;
+  const benchmarkIRR = 12; // later → dynamic MF / Portfolio
+  const gap = benchmarkIRR - policyIRR;
+
+  if (policyIRR < 0) {
+    return {
+      action: "switch",
+      reason: "Your policy is generating negative returns."
+    };
+  }
+
+  if (gap >= 4) {
+    return {
+      action: "switch",
+      reason: "Your policy significantly underperforms alternative investments."
+    };
+  }
+
+  return {
+    action: "hold",
+    reason: "Your policy performance is reasonably aligned with benchmarks."
+  };
+}, [formData]);
+
+
 
   if (isLoading || !formData) {
     return (
@@ -406,7 +532,7 @@ export default function PolicyReviewReportPage() {
               <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl">
                 <FileText className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">Policy Review Report</h1>
+             <h1 className="text-xl md:text-2xl font-bold text-gray-900">Policy Review Report for {formData?.step1?.name}</h1>
             </div>
             <Button
               onClick={handleDownloadPDF}
@@ -434,6 +560,136 @@ export default function PolicyReviewReportPage() {
             <div className="h-1 w-16 bg-gradient-to-l from-transparent to-blue-500 rounded-full"></div>
           </div>
         </div>
+
+        {entryAge !== null && (
+  <div className="text-center">
+    <p className="text-sm text-gray-600">
+      Entry Age at Purchase:
+      <span className="font-bold text-gray-900 ml-1">
+        {entryAge} years
+      </span>
+    </p>
+  </div>
+)}
+
+
+        <Card className="shadow-md border border-gray-200">
+  <CardHeader>
+    <CardTitle className="text-lg font-bold text-gray-900">
+      Policy Details
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+    <div>
+      <p className="text-gray-500">Client Name</p>
+      <p className="font-semibold">{formData?.step1?.name}</p>
+    </div>
+
+    <div>
+      <p className="text-gray-500">Plan Name</p>
+      <p className="font-semibold">{formData?.step3?.selectedPolicy}</p>
+    </div>
+
+    <div>
+      <p className="text-gray-500">Purchase Date</p>
+      <p className="font-semibold">
+        {formData?.step2?.policyPurchaseDate
+  ? new Date(formData.step2.policyPurchaseDate).toLocaleDateString("en-IN")
+  : "—"}
+      </p>
+    </div>
+          
+    <div>
+  <p className="text-gray-500">Policy Status</p>
+  <p className="font-semibold">
+    {policyStatus?.label ?? "—"}
+  </p>
+</div>
+
+  <div>
+  <p className="text-gray-500">Maturity Date</p>
+  <p className="font-semibold">
+    {policyStatus?.maturityDate
+      ? policyStatus.maturityDate.toLocaleDateString("en-IN")
+      : "—"}
+  </p>
+</div>
+
+
+
+
+    <div>
+      <p className="text-gray-500">Policy Term</p>
+      <p className="font-semibold">{formData?.step4?.policyTerm} years</p>
+    </div>
+
+    <div>
+      <p className="text-gray-500">Premium Paying Term</p>
+      <p className="font-semibold">{formData?.step4?.premiumPayingTerm} years</p>
+    </div>
+
+    <div>
+      <p className="text-gray-500">Annual Premium</p>
+      <p className="font-semibold">
+        ₹{Number(formData?.step4?.premiumAmount ?? 0).toLocaleString("en-IN")}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-gray-500">Basic Sum Assured</p>
+      <p className="font-semibold">
+        ₹{Number(formData?.step4?.basicSumAssured ?? 0).toLocaleString("en-IN")}
+      </p>
+    </div>
+  </CardContent>
+</Card>
+
+        
+    
+
+    {durationAnalytics && (
+  <Card className="shadow-md border border-gray-200">
+    <CardHeader>
+      <CardTitle className="text-lg font-bold text-gray-900">
+        Policy Progress
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+      
+      <div>
+        <p className="text-gray-500">Years Completed</p>
+        <p className="text-xl font-bold text-blue-600">
+          {durationAnalytics.yearsCompleted} years
+        </p>
+      </div>
+
+      <div>
+        <p className="text-gray-500">Years Remaining</p>
+        <p className="text-xl font-bold text-green-600">
+          {durationAnalytics.yearsRemaining} years
+        </p>
+      </div>
+
+      <div>
+        <p className="text-gray-500">PPT Completed</p>
+        <p className="text-xl font-bold text-indigo-600">
+          {durationAnalytics.pptCompleted} years
+        </p>
+      </div>
+
+      <div>
+        <p className="text-gray-500">PPT Remaining</p>
+        <p className="text-xl font-bold text-purple-600">
+          {durationAnalytics.pptRemaining} years
+        </p>
+      </div>
+
+    </CardContent>
+  </Card>
+)}
+
+
+
 
         {/* 1. Naitri Score */}
         <Card className="border-2 border-indigo-300 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
@@ -817,22 +1073,30 @@ export default function PolicyReviewReportPage() {
           <CardContent className="pt-6 space-y-6">
             
             <div className={`p-6 rounded-2xl border-2 ${
-              naitriLogic.shouldSwitch 
-                ? "bg-gradient-to-r from-green-100 to-emerald-100 border-green-300" 
-                : "bg-gradient-to-r from-blue-100 to-sky-100 border-blue-300"
-            }`}>
+  recommendationLogic?.action === "switch"
+    ? "bg-gradient-to-r from-green-100 to-emerald-100 border-green-300"
+    : "bg-gradient-to-r from-blue-100 to-sky-100 border-blue-300"
+}`}>
+
               <div className="flex items-start gap-3">
-                <CheckCircle className={`h-7 w-7 flex-shrink-0 mt-1 ${naitriLogic.shouldSwitch ? 'text-green-600' : 'text-blue-600'}`} />
+               <CheckCircle className={`h-7 w-7 flex-shrink-0 mt-1 ${
+  recommendationLogic?.action === "switch"
+    ? 'text-green-600'
+    : 'text-blue-600'
+}`} />
+
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {naitriLogic.shouldSwitch ? "✅ Recommendation: Switch to Naitri Portfolio" : "✅ Recommendation: Continue with Existing Policy"}
+                    {recommendationLogic?.action === "switch"
+ ? "✅ Recommendation: Switch to Naitri Portfolio"
+ : "✅ Recommendation: Continue with Existing Policy"}
                   </h3>
-                  <p className="text-gray-700">
-                    {naitriLogic.shouldSwitch 
-                      ? "Based on our analysis, switching to Naitri Portfolio can potentially give you significantly better returns while maintaining similar or better risk-adjusted performance."
-                      : "Based on our analysis, your current policy provides competitive returns when considering the guaranteed benefits, insurance cover, and lower volatility compared to market-linked investments."
-                    }
-                  </p>
+                  <div className="text-gray-700">
+                   <div className="text-gray-700">
+  {recommendationLogic?.reason}
+</div>
+
+                  </div>
                 </div>
               </div>
             </div>
