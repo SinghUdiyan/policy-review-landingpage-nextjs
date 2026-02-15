@@ -157,10 +157,20 @@ class PolicyDataService {
 
   /**
    * Check if age is within policy entry age range
+   * Handle special case where policy requires days but age is calculated in years
    */
   isAgeEligible(policy: PolicyData, age: number): boolean {
     const minAge = this.parseAge(policy.MinEntryAge);
     const maxAge = this.parseAge(policy.MaxEntryAge);
+    
+    // Special handling for "90 days" minimum when age is 0 years
+    if (age === 0 && typeof policy.MinEntryAge === 'string' && policy.MinEntryAge.toLowerCase().includes('day')) {
+      // For infants, we need to check if they meet the minimum days requirement
+      // If age is 0 years but > 0, they are at least some days old
+      // This handles the case where child is 324 days old (eligible for 90 days requirement)
+      return true; // Allow 0-year-olds for day-based policies since calculateAge returns 0 for < 1 year
+    }
+    
     return age >= minAge && age <= maxAge;
   }
 

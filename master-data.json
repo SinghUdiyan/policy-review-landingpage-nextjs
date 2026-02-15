@@ -33,7 +33,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N283V02",
@@ -69,7 +69,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N297V02",
@@ -105,7 +105,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N278V02",
@@ -429,7 +429,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N304V02",
@@ -465,7 +465,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N304V02",
@@ -501,7 +501,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N315V01",
@@ -1384,7 +1384,7 @@
       },
       "MaturityBenefit": null,
       "Module": "Module 2",
-      "FromDate": "2015-04-24",
+      "FromDate": "2015-04-22",
       "ToDate": "2020-01-31"
     },
     {
@@ -1412,7 +1412,7 @@
       },
       "MaturityBenefit": null,
       "Module": "Module 2",
-      "FromDate": "2015-04-24",
+      "FromDate": "2015-04-22",
       "ToDate": "2020-01-31"
     },
     {
@@ -1440,7 +1440,7 @@
       },
       "MaturityBenefit": null,
       "Module": "Module 2",
-      "FromDate": "2015-04-24",
+      "FromDate": "2015-04-22",
       "ToDate": "2020-01-31"
     },
     {
@@ -1468,7 +1468,7 @@
       },
       "MaturityBenefit": null,
       "Module": "Module 2",
-      "FromDate": "2015-04-24",
+      "FromDate": "2015-04-22",
       "ToDate": "2020-01-31"
     },
     {
@@ -1609,7 +1609,7 @@
       "MaturityBenefit": null,
       "Module": "Module 2",
       "FromDate": "2024-01-12",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N365V01",
@@ -1637,7 +1637,7 @@
       "MaturityBenefit": null,
       "Module": "Module 2",
       "FromDate": "2024-01-12",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N312V01",
@@ -3714,7 +3714,7 @@
       },
       "Module": "Module 1",
       "FromDate": "2020-02-01",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3744,7 +3744,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3774,7 +3774,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3804,7 +3804,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3834,7 +3834,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3864,7 +3864,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3894,7 +3894,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3924,7 +3924,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3954,7 +3954,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -3984,7 +3984,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -4014,7 +4014,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -4044,7 +4044,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
     },
     {
       "UIN": "512N363V01",
@@ -4074,6 +4074,46 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2024-09-30"
+      "ToDate": "2025-12-31"
+    },
+    {
+      "UIN": "512N346V01",
+      "PlanName": "LIC's Dhan Sanchay",
+      "MinEntryAge": 0,
+      "MaxEntryAge": 8,
+      "MinAgeAtMaturity": 18,
+      "MaxAgeAtMaturity": 25,
+      "PPT": "5",
+      "MinPolicyTerm": 10,
+      "MaxPolicyTerm": 15,
+      "MinSumAssured": 100000,
+      "MaxSumAssured": "No Limit",
+      "PaymentOfPremium": "1,2,3,4",
+      "SumAssuredMultiples": 10000,
+      "SurvivalBenefits": {},
+      "MaturityBenefit": 100,
+      "Module": "Module 1",
+      "FromDate": "2022-05-17",
+      "ToDate": "2025-12-31"
+    },
+    {
+      "UIN": "512N353V01",
+      "PlanName": "LIC's Jeevan Kiran",
+      "MinEntryAge": 18,
+      "MaxEntryAge": 50,
+      "MinAgeAtMaturity": 25,
+      "MaxAgeAtMaturity": 75,
+      "PPT": "5,6,7,8,9,10",
+      "MinPolicyTerm": 10,
+      "MaxPolicyTerm": 30,
+      "MinSumAssured": 100000,
+      "MaxSumAssured": "No Limit",
+      "PaymentOfPremium": "1,2,3,4",
+      "SumAssuredMultiples": 10000,
+      "SurvivalBenefits": {},
+      "MaturityBenefit": 100,
+      "Module": "Module 1",
+      "FromDate": "2023-07-27",
+      "ToDate": null
     }
   ]
