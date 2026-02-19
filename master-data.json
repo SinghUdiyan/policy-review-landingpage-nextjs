@@ -4050,7 +4050,7 @@
       "UIN": "512N363V01",
       "PlanName": "LIC's Jeevan Utsav",
       "MinEntryAge": "90 days",
-      "MaxEntryAge": 59,
+      "MaxEntryAge": 65,
       "MinAgeAtMaturity": 18,
       "MaxAgeAtMaturity": 75,
       "PPT": "16",
@@ -4074,7 +4074,7 @@
       "MaturityBenefit": 100,
       "Module": "Module 1",
       "FromDate": "2023-11-23",
-      "ToDate": "2025-12-31"
+      "ToDate": "2024-09-30"
     },
     {
       "UIN": "512N346V01",
@@ -4158,6 +4158,27 @@
       "Module": "Module 1",
       "FromDate": "2020-01-01",
       "ToDate": "2025-12-31"
+    },
+    {
+      "UIN": "512N346V05",
+      "PlanName": "LIC's Dhan Sanchay",
+      "Option": "Single Premium Enhanced",
+      "MinEntryAge": 3,
+      "MaxEntryAge": 65,
+      "MinAgeAtMaturity": 18,
+      "MaxAgeAtMaturity": 80,
+      "PPT": "1",
+      "MinPolicyTerm": 10,
+      "MaxPolicyTerm": 35,
+      "MinSumAssured": 200000,
+      "MaxSumAssured": "No Limit",
+      "PaymentOfPremium": "1",
+      "SumAssuredMultiples": 10000,
+      "SurvivalBenefits": {},
+      "MaturityBenefit": 100,
+      "Module": "Module 1",
+      "FromDate": "2022-05-17",
+      "ToDate": "2024-03-31"
     },
     {
       "UIN": "512N353V01",
