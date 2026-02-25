@@ -111,7 +111,8 @@ class PolicyDataService {
   /**
    * Parse age value (handles "90 Days", "90 days", numbers, "40 Year")
    */
-  private parseAge(age: number | string): number {
+  private parseAge(age: number | string | undefined | null): number {
+    if (age === null || age === undefined) return 0;
     if (typeof age === "number") return age;
     if (typeof age === "string") {
       const lowerAge = age.toLowerCase();
@@ -162,14 +163,6 @@ class PolicyDataService {
   isAgeEligible(policy: PolicyData, age: number): boolean {
     const minAge = this.parseAge(policy.MinEntryAge);
     const maxAge = this.parseAge(policy.MaxEntryAge);
-    
-    // Special handling for "90 days" minimum when age is 0 years
-    if (age === 0 && typeof policy.MinEntryAge === 'string' && policy.MinEntryAge.toLowerCase().includes('day')) {
-      // For infants, we need to check if they meet the minimum days requirement
-      // If age is 0 years but > 0, they are at least some days old
-      // This handles the case where child is 324 days old (eligible for 90 days requirement)
-      return true; // Allow 0-year-olds for day-based policies since calculateAge returns 0 for < 1 year
-    }
     
     return age >= minAge && age <= maxAge;
   }
@@ -313,6 +306,13 @@ class PolicyDataService {
     // Adjust if birthday hasn't occurred yet in the purchase year
     if (purchaseMonth < birthMonth || (purchaseMonth === birthMonth && purchaseDay < birthDay)) {
       age = age - 1;
+    }
+    
+    // For infants under 1 year, calculate fractional age for more precise day-based comparisons
+    if (age === 0) {
+      const diffInMs = purchaseDate.getTime() - dateOfBirth.getTime();
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+      return diffInDays / 365; // Return fractional years (e.g., 90 days = ~0.25 years)
     }
     
     return age;
