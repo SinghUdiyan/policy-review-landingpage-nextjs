@@ -217,12 +217,12 @@ const entryAge = useMemo(() => {
     ]
   };
 
-  const naitriLogic = {
-    mutualFundValue: 1800000,
-    policyValue: 1200000,
-    threshold: 1.35,
-    shouldSwitch: 1800000 >= (1200000 * 1.35),
-  };
+  // const naitriLogic = {
+  //   mutualFundValue: 1800000,
+  //   policyValue: 1200000,
+  //   threshold: 1.35,
+  //   shouldSwitch: 1800000 >= (1200000 * 1.35),
+  // };
 
   const naitriActionPlan = {
     lumpSum: 55000,
@@ -406,7 +406,7 @@ const recommendationLogic = useMemo(() => {
     action: "hold",
     reason: "Your policy performance is reasonably aligned with benchmarks."
   };
-}, [formData]);
+}, [formData, performanceData.today.irr]);
 
 
 
